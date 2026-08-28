@@ -53,7 +53,7 @@ export const site = {
     cli: '.\\FriendsOfDutyExporter.exe --cli --game-dir "C:\\Program Files (x86)\\Call of Duty Game of the Year Edition" --output .\\out --zip .\\out\\cod2003.fodpak',
   },
 
-  contact: 'alcmoraes89@gmail.com',
+  contact: 'contact@friendsofduty.com',
   privacyUpdated: '28 August 2026',
 } as const
 

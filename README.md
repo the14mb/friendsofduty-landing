@@ -1,0 +1,124 @@
+# friendsofduty.com
+
+Landing page for **Friends of Duty**. React + TypeScript, built with Vite,
+**compiled locally** and served by GitHub Pages from the committed `docs/`
+folder. There is no CI step and no build server — what is in `docs/` is what
+is live.
+
+## Run it
+
+```bash
+npm install
+npm run dev       # local dev server with HMR
+npm run build     # type-check, then compile into docs/
+npm run preview   # serve the compiled docs/ exactly as Pages will
+```
+
+**Deploying is `npm run build`, then commit `docs/`.** Do not add `docs/` to
+`.gitignore`; it is the artifact.
+
+### One-time GitHub Pages setup
+
+1. Push this repo to GitHub.
+2. Settings → Pages → Source: **Deploy from a branch**, branch `main`, folder
+   **`/docs`**.
+3. Settings → Pages → Custom domain: `friendsofduty.com`, and tick **Enforce
+   HTTPS** once the certificate is issued.
+4. At the DNS registrar, point the apex at GitHub Pages:
+
+   | Type | Name | Value |
+   |---|---|---|
+   | A | `@` | `185.199.108.153` |
+   | A | `@` | `185.199.109.153` |
+   | A | `@` | `185.199.110.153` |
+   | A | `@` | `185.199.111.153` |
+   | CNAME | `www` | `<user>.github.io` |
+
+`public/CNAME` already carries the domain, so it survives every build.
+`public/.nojekyll` stops Pages running Jekyll over the output.
+
+## Pages
+
+| URL | Source |
+|---|---|
+| `/` | `index.html` → `src/main.tsx` → `src/App.tsx` |
+| `/privacy/` | `privacy/index.html` → `src/privacy.tsx` → `src/pages/Privacy.tsx` |
+
+Two HTML entries rather than a client-side router, so `/privacy/` is a real
+static path that needs no `404.html` fallback. `/privacy` redirects to it.
+
+## Editing content
+
+**`src/site.config.ts` is the only file with URLs,version numbers or download
+metadata in it.** Everything else reads from there.
+
+A link left as an empty string renders its button in a **LINK PENDING** state
+— visible and labelled, but not clickable — rather than shipping a dead
+`href`. Fill the string in, rebuild, and the button activates.
+
+Currently pending:
+
+- `links.googlePlay` — the Play Store listing.
+
+To publish a full trailer: drop the file at `public/media/trailer.mp4` and set
+`trailer.available: true`. It renders above the loop grid as the lead video.
+
+## Design
+
+The palette is lifted verbatim from the game's own
+`Assets/Scripts/Presentation/MenuSkin.cs` so the site and the client read as
+one artifact:
+
+| Token | Hex | Role |
+|---|---|---|
+| `--coal` | `#080B0D` | page ground |
+| `--iron` | `#12181C` | panels |
+| `--iron-raised` | `#1B2328` | raised panels, buttons |
+| `--fog` | `#D8DDDC` | primary text |
+| `--muted` | `#849095` | secondary text |
+| `--signal` | `#E7A83E` | **state and action only** |
+| `--danger` | `#A94A3E` | warnings, the DENIED stamps |
+
+The discipline matters more than the values: **amber is reserved for state and
+action**, exactly as the comment in `MenuSkin.cs` says. It marks something you
+can press, something focused, or a live figure. It is never decoration.
+
+The signature interaction is the game's **acquisition bracket** — the four
+amber corner marks that snap around a focused element on a controller. On the
+web the same treatment serves hover *and* keyboard focus, so the site is
+navigable by either and looks deliberate doing it (`.bracket` in
+`src/styles/app.css`).
+
+Type: Saira Condensed (display) / Barlow (body) / IBM Plex Mono (labels, specs,
+hashes). All three are SIL OFL and **self-hosted** via `@fontsource`.
+
+## No third-party requests
+
+The page loads nothing from any other origin — no font CDN, no analytics, no
+embedded video player, no icon library. Fonts are bundled, icons are inline
+SVG, the footage is self-hosted MP4. This is what makes the privacy policy's
+central claim true, so **keep it that way**: if a change would add an external
+request, it needs a matching edit to `src/pages/Privacy.tsx`.
+
+## Media
+
+| Path | Notes |
+|---|---|
+| `public/media/keyart.jpg` | 1920×620 Steam library hero. Deliberately the one with no wordmark baked in — the crisp logo above it is the only wordmark on the page. |
+| `public/media/wordmark.png` | Alpha-trimmed and quantised from the 1280×720 master, 1.19 MB → 150 KB. |
+| `public/media/shots/shot-N.jpg` | Store screenshots. Numbered so they can be swapped without touching code; add or remove by editing the array in `site.config.ts`. |
+| `public/media/clips/*.mp4` | The Steam capsule loops, transcoded from HEVC to H.264 because Firefox cannot play HEVC and Chrome only sometimes can. Silent, 10–12 s. |
+
+Clips autoplay only while on screen and pause when scrolled away, so four
+videos cost one decoder rather than four. Under `prefers-reduced-motion` they
+do not autoplay at all and get native controls instead.
+
+## Content rules
+
+The hero and description follow the Steam copy of record
+(`FriendsOfDutyUnity/Docs/STEAM_STORE_PAGE.md`, App 4480880) and name no
+source game — that page's hard rule. The **exporter section is the deliberate
+exception**: it names Call of Duty (2003) and United Offensive because that is
+what the tool extracts from, matching the public
+[COD2003-FODPAK-GEN](https://github.com/the14mb/COD2003-FODPAK-GEN) repo and
+its releases. Keep that split.

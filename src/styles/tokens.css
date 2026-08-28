@@ -55,9 +55,13 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+html {
+  background: var(--coal);
+}
+
 body {
   margin: 0;
-  background: var(--coal);
+  background: transparent;
   color: var(--fog);
   font-family: var(--font-body);
   font-size: var(--step-body);
@@ -75,6 +79,37 @@ video {
 
 a {
   color: inherit;
+}
+
+/* Scrollbars. A default light scrollbar on a near-black page reads as a bug —
+   most visible on the CLI block, which scrolls horizontally by design. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--signal-dim) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--coal) 70%, transparent);
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--fog) 18%, transparent);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--signal-dim);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 ::selection {

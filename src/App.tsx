@@ -1,3 +1,4 @@
+import { Backdrop } from './components/Backdrop'
 import { Masthead } from './components/Masthead'
 import { Hero } from './components/Hero'
 import { Brief } from './components/Brief'
@@ -12,6 +13,7 @@ import { Footer } from './components/Footer'
 export default function App() {
   return (
     <>
+      <Backdrop />
       <Masthead home />
       <main>
         <Hero />

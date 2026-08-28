@@ -93,6 +93,12 @@ navigable by either and looks deliberate doing it (`.bracket` in
 Type: Saira Condensed (display) / Barlow (body) / IBM Plex Mono (labels, specs,
 hashes). All three are SIL OFL and **self-hosted** via `@fontsource`.
 
+Panels are deliberately *translucent* (`color-mix(... , transparent)`) rather
+than solid, so the backdrop reads through and the page holds together as one
+place instead of a stack of unrelated dark boxes. If you raise the plate's
+brightness, re-check body-copy contrast before shipping — `--muted` on the
+brightest part of the plate is the tightest pair on the site.
+
 ## No third-party requests
 
 The page loads nothing from any other origin — no font CDN, no analytics, no
@@ -106,6 +112,7 @@ request, it needs a matching edit to `src/pages/Privacy.tsx`.
 | Path | Notes |
 |---|---|
 | `public/media/keyart.jpg` | 1920×620 Steam library hero. Deliberately the one with no wordmark baked in — the crisp logo above it is the only wordmark on the page. |
+| `public/media/page-bg.jpg` | The ruined-street plate, fixed behind the whole document. Deliberately soft and heavily scrimmed — it is atmosphere, never a picture you look at. Measured composite tops out near `#1a1c1a`, keeping `--muted` body copy at roughly 5:1. |
 | `public/media/wordmark.png` | Alpha-trimmed and quantised from the 1280×720 master, 1.19 MB → 150 KB. |
 | `public/media/shots/shot-N.jpg` | Store screenshots. Numbered so they can be swapped without touching code; add or remove by editing the array in `site.config.ts`. |
 | `public/media/clips/*.mp4` | The Steam capsule loops, transcoded from HEVC to H.264 because Firefox cannot play HEVC and Chrome only sometimes can. Silent, 10–12 s. |

@@ -1,10 +1,12 @@
 import { site } from '../site.config'
+import { Backdrop } from '../components/Backdrop'
 import { Masthead } from '../components/Masthead'
 import { Footer } from '../components/Footer'
 
 export default function Privacy() {
   return (
     <>
+      <Backdrop />
       <Masthead />
       <main className="shell">
         <article className="doc">

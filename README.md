@@ -116,6 +116,7 @@ request, it needs a matching edit to `src/pages/Privacy.tsx`.
 | Path | Notes |
 |---|---|
 | `public/media/keyart.jpg` | 1920×620 Steam library hero. Deliberately the one with no wordmark baked in — the crisp logo above it is the only wordmark on the page. |
+| `public/media/og-card-v2.jpg` | The social share card. Exactly **1200x630** (the Open Graph 1.91:1 standard) built from the wordmark-free library hero with the crisp logo composited on top. The `-v2` suffix is deliberate: Facebook and WhatsApp cache scrapes hard, so a changed card needs a **new URL**, not new bytes at the old one. Bump to `-v3` next time. |
 | `public/media/page-bg.jpg` | The ruined-street plate, fixed behind the whole document. Deliberately soft and heavily scrimmed — it is atmosphere, never a picture you look at. Measured composite tops out near `#1a1c1a`, keeping `--muted` body copy at roughly 5:1. |
 | `public/media/wordmark.png` | Alpha-trimmed and quantised from the 1280×720 master, 1.19 MB → 150 KB. |
 | `public/media/shots/shot-N.jpg` | Store screenshots. Numbered so they can be swapped without touching code; add or remove by editing the array in `site.config.ts`. |
@@ -151,3 +152,25 @@ exception**: it names Call of Duty (2003) and United Offensive because that is
 what the tool extracts from, matching the public
 [COD2003-FODPAK-GEN](https://github.com/the14mb/COD2003-FODPAK-GEN) repo and
 its releases. Keep that split.
+
+
+## Social share cards
+
+Both entries carry a full Open Graph + Twitter block. Two details do the heavy
+lifting and are easy to lose in an edit:
+
+- **`og:image:width` / `og:image:height`.** Without them WhatsApp and Facebook
+  must fetch and measure the image before they can lay out the card, which is
+  the usual reason a first share renders as bare text.
+- **Absolute `https://` URLs.** Scrapers do not resolve relative paths.
+
+Twitter/X reads its own `twitter:*` namespace and ignores most `og:*` fields,
+so both sets are present rather than relying on fallback.
+
+There is no `twitter:site` / `twitter:creator` — add them if the project gets
+an X account; they attribute the card to a handle.
+
+After changing the card, re-scrape rather than waiting on the caches:
+<https://developers.facebook.com/tools/debug/> and
+<https://cards-dev.twitter.com/validator>. WhatsApp piggybacks on Facebook's
+cache, so the Facebook debugger clears it too.

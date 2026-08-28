@@ -70,16 +70,14 @@ export function Footage() {
           <Eyebrow>Footage</Eyebrow>
           <h2 className="h2">See it move</h2>
           <p className="lede">
-            Recorded in the client, running a pack built from a player’s own install. No audio —
-            these are loops, not a trailer.
+            The trailer, then four short silent loops. All of it recorded in the client, running
+            a pack built from a player’s own install.
           </p>
         </Reveal>
 
         {site.trailer.available ? (
           <Reveal>
-            <div className="trailer" style={{ marginBottom: '1.5rem' }}>
-              <div className="trailer__bar trailer__bar--top" />
-              <div className="trailer__bar trailer__bar--bottom" />
+            <div className="trailer" style={{ marginBottom: '2.5rem' }}>
               <video
                 className="trailer__video"
                 src={site.trailer.src}

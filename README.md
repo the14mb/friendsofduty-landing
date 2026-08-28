@@ -60,8 +60,9 @@ Currently pending:
 
 - `links.googlePlay` — the Play Store listing.
 
-To publish a full trailer: drop the file at `public/media/trailer.mp4` and set
-`trailer.available: true`. It renders above the loop grid as the lead video.
+To replace the trailer: drop a new file at `public/media/trailer.mp4`, refresh
+`trailer-poster.jpg`, rebuild. Setting `trailer.available: false` hides the
+lead video and leaves just the loop grid.
 
 ## Design
 
@@ -108,6 +109,23 @@ request, it needs a matching edit to `src/pages/Privacy.tsx`.
 | `public/media/wordmark.png` | Alpha-trimmed and quantised from the 1280×720 master, 1.19 MB → 150 KB. |
 | `public/media/shots/shot-N.jpg` | Store screenshots. Numbered so they can be swapped without touching code; add or remove by editing the array in `site.config.ts`. |
 | `public/media/clips/*.mp4` | The Steam capsule loops, transcoded from HEVC to H.264 because Firefox cannot play HEVC and Chrome only sometimes can. Silent, 10–12 s. |
+| `public/media/trailer.mp4` | The store trailer, pulled from Steam's DASH manifest for App 4480880 and transcoded from AV1/1080p60 to H.264 + AAC (19 MB, 0:52). `preload="none"` with faststart, so it costs nothing until someone presses play. |
+
+### Why the trailer is self-hosted rather than streamed from Steam
+
+Steam's DASH endpoint *would* work — it serves `access-control-allow-origin: *`
+on both the manifest and the segments, and a ~10 year `cache-control`. It was
+still the wrong call:
+
+- it hands every visitor's IP to Akamai and Valve, which is exactly what the
+  privacy policy promises does not happen;
+- the URL embeds a build id and content hash, so re-uploading the trailer on
+  Steam silently breaks the page with nothing to warn you;
+- DASH needs a JS player (Safari has no native support), which is ~370 KB to
+  avoid a file that only downloads on demand.
+
+If repo weight ever becomes the problem, add a 720p variant — do not reach for
+the CDN.
 
 Clips autoplay only while on screen and pause when scrolled away, so four
 videos cost one decoder rather than four. Under `prefers-reduced-motion` they

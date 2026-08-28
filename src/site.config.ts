@@ -25,13 +25,16 @@ export const site = {
   },
 
   /**
-   * Full trailer, when there is one. Drop the file at public/media/trailer.mp4
-   * and flip `available` — it renders above the loops as the lead video.
+   * The store trailer, pulled from Steam's DASH manifest for App 4480880 and
+   * transcoded from AV1 to H.264 so it plays without a JS player. Self-hosted
+   * rather than streamed from Steam's CDN: an embed would hand every visitor's
+   * IP to Akamai, which the privacy policy promises does not happen.
    */
   trailer: {
     src: '/media/trailer.mp4',
-    poster: '/media/clips/deck.jpg',
-    available: false,
+    poster: '/media/trailer-poster.jpg',
+    duration: '0:52',
+    available: true,
   },
 
   exporter: {

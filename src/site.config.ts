@@ -20,8 +20,7 @@ export const site = {
   links: {
     steam: 'https://store.steampowered.com/app/4480880/Friends_of_Duty/',
     discord: 'https://discord.gg/hBm9kggMaR',
-    /** TODO: Play Store listing. Empty renders the button as LINK PENDING. */
-    googlePlay: '',
+    googlePlay: 'https://play.google.com/store/apps/details?id=com.friendsofduty.game',
   },
 
   /**

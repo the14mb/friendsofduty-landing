@@ -56,9 +56,13 @@ A link left as an empty string renders its button in a **LINK PENDING** state
 — visible and labelled, but not clickable — rather than shipping a dead
 `href`. Fill the string in, rebuild, and the button activates.
 
-Currently pending:
+All external links are now live; nothing renders in the pending state.
 
-- `links.googlePlay` — the Play Store listing.
+The header's call to action is platform-aware: on **Android** it points at
+Google Play, everywhere else at Steam (`src/platform.ts`). It keys on Android
+specifically rather than "mobile" — there is no iOS build, so sending an
+iPhone to Google Play would be a dead end, and any non-Android result falls
+back to Steam.
 
 To replace the trailer: drop a new file at `public/media/trailer.mp4`, refresh
 `trailer-poster.jpg`, rebuild. Setting `trailer.available: false` hides the

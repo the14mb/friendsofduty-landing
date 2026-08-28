@@ -1,6 +1,7 @@
 import { site } from '../site.config'
+import { isAndroid } from '../platform'
 import { Action } from './primitives'
-import { SteamMark } from './icons'
+import { SteamMark, PlayMark } from './icons'
 
 const NAV = [
   { href: '/#the-brief', label: 'The brief' },
@@ -10,6 +11,10 @@ const NAV = [
 ]
 
 export function Masthead({ home = false }: { home?: boolean }) {
+  // On Android the header's one call to action should be the store the
+  // visitor can actually install from. Everywhere else, Steam.
+  const toPlayStore = isAndroid() && Boolean(site.links.googlePlay)
+
   return (
     <header className="masthead">
       <div className="shell masthead__inner">
@@ -30,9 +35,9 @@ export function Masthead({ home = false }: { home?: boolean }) {
         ) : null}
 
         <Action
-          href={site.links.steam}
+          href={toPlayStore ? site.links.googlePlay : site.links.steam}
           variant="primary"
-          icon={<SteamMark />}
+          icon={toPlayStore ? <PlayMark /> : <SteamMark />}
           className={`masthead__cta ${home ? '' : 'masthead__cta--solo'}`}
         >
           Get it free
